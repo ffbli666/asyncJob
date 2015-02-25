@@ -1,6 +1,7 @@
+global.config        = require('./config')();
 global.async         = require('async');
 global.fs            = require('fs');
-global.config        = require('./config')();
+global.jobModule     = require('./system/libraries/job-module')();
 global.child_process = require('child_process');
 
 var cluster    = require('cluster');
@@ -36,30 +37,28 @@ var server     = require('./server');
     //     console.log('PARENT got message:', m);
     // });
     // n2.send({ hello: 'world 222' });    ;
-    
-    loadJobModule(['aj-video-encoder', 'aj-office-to-pdf']);
+
+
+    jobModule.load(config.jobModules);
     
     // database start
-    global.db = require('./database/' + config.database.driver);
+    global.db = require('./system/database/' + config.database.driver);
     db.start(config.database);
 
     // httpd start
     server.start(config.server);
 
-    var supervisor = child_process.fork('./system/supervisor.js');
-    config.supervisor.pid = supervisor.pid;
-    supervisor.send(config.supervisor);
-}
-
-
-
-function loadJobModule(jobModule) {
-    if( Object.prototype.toString.call( jobModule ) !== '[object Array]' ) {
-        return false;
-    }
+    var supervisor = child_process.fork('./system/supervisor.js');    
+    supervisor.send({});
     
-    global.jobModule = {};
-    jobModule.forEach(function (name) {        
-        global.jobModule[name.replace('aj-', '')] = require(name);
-    })    
+    supervisor.on('error', function(err) {
+        console.log('supervisor error: ' + err);
+    });
+
+    supervisor.on('exit', function (code, signal) {        
+        console.log('supervisor exit. code: ' + code + ' signal: ' + signal);
+    });
+
+    // send SIGHUP to process
+    //supervisor.kill('SIGHUP');
 }

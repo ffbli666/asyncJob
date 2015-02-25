@@ -1,11 +1,11 @@
-module.exports = function(app) {
+module.exports = function(app) {    
     return {
         server: {
             port: 8888
         },
         supervisor: {            
             pollingInterval: 5000,
-            maxForkNumber: 1
+            maxForkNumber: 2
         },
         database: {
             driver   : 'mysql',
@@ -16,7 +16,7 @@ module.exports = function(app) {
             database : 'async-job',
             connectionLimit : 10,
         },
-        job_module: ['aj-video-encoder', 'aj-office-to-pdf'],
+        jobModules: ['aj-office-to-pdf'],
         
     };
 };

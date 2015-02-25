@@ -1,4 +1,4 @@
-var job_model  = require('../models/job')();
+var jobModel  = require('../models/job')();
 
 /*
     {
@@ -10,31 +10,21 @@ var job_model  = require('../models/job')();
 */
 
 exports.create = function(req, res) {
-    var data = req.body;
 
-    if (!data.job) {
-        res.status(404).json({status:404, msg:'unknow job type'});
-        return;
-    }
-        
-    if (Object.prototype.toString.call(jobModule[data.job]) !== '[object Function]') {
-        res.status(404).json({status:404, msg:'unknow job type'});
-        return;
-    }
-    var config = data.config || {};
     var data =  {
-                    job: data.job,
-                    config: config,
+                    job: req.body.job,
+                    config: req.body.config,
                     from: req.connection.remoteAddress,
                     agent: req.headers['user-agent']
                 };
-    job_model.create(data, function(err, result) {
+
+    jobModel.create(data, function(err, result) {
         if (err) {
             res.status(404).json({status:404, msg:err});
             return;
         }        
         res.json({status:200, msg:'ok', result: {uuid: result.uuid}});
-    })    
+    });
 };
 
 exports.progress = function(req, res) {
@@ -43,11 +33,15 @@ exports.progress = function(req, res) {
         res.status(404).json({status:404, msg:'unknow job id'});
         return;
     }
-    job_model.getProgress(data.uuid, function(err, result) {
+    jobModel.getProgress(data.uuid, function(err, result) {
         if (err) {
-            res.status(404).json({status:404, msg:err});
+            res.status(404).json({status:404, msg:'not found job'});
             return;
-        }        
+        }
+        if (!result) {
+            res.status(404).json({status:404, msg:'not found job'});
+            return;   
+        }
         res.json({status:200, msg:'ok', result: result});
-    })  
+    });
 };
