@@ -1,5 +1,9 @@
 module.exports = function(app) {    
     return {
+        system: {
+            publicPath: './public', //express htdoc
+            tmpPath: './tmp'
+        },
         server: {
             port: 8888
         },
@@ -16,7 +20,16 @@ module.exports = function(app) {
             database : 'async-job',
             connectionLimit : 10,
         },
-        jobModules: ['aj-office-to-pdf'],
+        jobModules: [
+                        {
+                            app: 'aj-office-to-pdf',
+                            config: {
+                                wget: 'D:/software/wget-1.11.4-1-bin/bin/wget.exe',
+                                publicPath: './public', //express htdoc
+                                tmpPath: './tmp'
+                            }
+                        }
+                    ],
         
     };
 };

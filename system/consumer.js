@@ -7,25 +7,35 @@ db.start(config.database);
 
 jobModule.load(config.jobModules);
 
-
 process.on('message', function(job) {
+    var consumer = jobModule.get(job.job);
+    var config = JSON.parse(job.config);   
+    var progress = new Progress(job);
     
-
-    var module = jobModule.get(job.job);    
-    var consumer = new module();
-    console.log(consumer);
-
-    var config = JSON.parse(job.config);
-    consumer.run(config, function(err, result){
-        if (err) {
-            jobModel.setStatus({id: job.id, status: 'error', log: err}, function(err, result) {
-                process.disconnect();
+    jobModel.setStatus({id: job.id, status: 'start'}, function(err, result) {        
+        consumer.run(config, job, progress, function(err, result){
+            if (err) {
+                jobModel.setStatus({id: job.id, status: 'error', log: err}, function(err, result) {
+                    process.exit();
+                });
+                return;
+            }
+            jobModel.setStatus({id: job.id, status: 'complete', log: result}, function(err, result) {
+                process.exit();
             });
-            return;
-        }        
-        // jobModel.setStatus({id: job.id, status: 'complete', log: result}, function(err, result) {
-        //     process.disconnect();
-        // });
-        process.disconnect();
+        });
     });
 });
+
+function Progress (job) {    
+    function set(percent, callback) {
+        jobModel.setStatus({id: job.id, progress: percent}, function(err, result) {
+            if (err) {
+                callback(err);
+                return;
+            }
+            callback(null, result);
+        });
+    }
+    return {set: set}
+}

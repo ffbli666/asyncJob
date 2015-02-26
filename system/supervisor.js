@@ -33,7 +33,6 @@ Supervisor.prototype.run = function () {
 
 
     jobModel.getTopJob(function(err, job){
-    console.log('1');       
         if (err) {
             console.log('get job error: ' + err);
             return;
@@ -59,8 +58,16 @@ Supervisor.prototype.run = function () {
             return;
         }
         var consumer = child_process.fork('./system/consumer.js');
+
+        /*
+            todo: timeout monitor
+            set number of milliseconds since 1970/01/01
+        */
+        consumer.startTime = new Date().getTime();
+        
         that.fork.push(consumer);
         // console.log(that.fork.map(function(e){return e.pid;}));
+        // console.log(consumer);
         consumer.send(job);
 
         consumer.on('error', function(err) {

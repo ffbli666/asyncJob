@@ -23,22 +23,6 @@ var server     = require('./server');
 // } 
 // else 
 {    
-    // var child_process = require('child_process');
-    // var n = child_process.fork('./process/consumer.js');
-    // console.log('Spawned child pid: ' + n.pid);
-    // n.on('message', function(m) {
-    //     console.log('PARENT got message:', m);
-    // });
-    // //n.send({ hello: 'world' });
-
-    // var n2 = child_process.fork('./process/consumer.js');
-    // console.log('Spawned child pid: ' + n2.pid);
-    // n2.on('message', function(m) {
-    //     console.log('PARENT got message:', m);
-    // });
-    // n2.send({ hello: 'world 222' });    ;
-
-
     jobModule.load(config.jobModules);
     
     // database start
@@ -58,7 +42,4 @@ var server     = require('./server');
     supervisor.on('exit', function (code, signal) {        
         console.log('supervisor exit. code: ' + code + ' signal: ' + signal);
     });
-
-    // send SIGHUP to process
-    //supervisor.kill('SIGHUP');
 }
