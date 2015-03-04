@@ -1,5 +1,5 @@
 global.config     = require('../config')();
-global.jobModule  = require('../system/libraries/job-module')();
+global.jobModule  = require('../system/libraries/jobModule')();
 global.child_process = require('child_process');
 var jobModel      = require('../models/job')();
 

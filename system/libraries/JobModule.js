@@ -16,7 +16,7 @@ JobModule.prototype.load = function (jobModules) {
     }    
     jobModules.forEach(function (item) {
         var app = require(item.app);
-        that.modules[item.app.replace('aj-', '')] = new app(item.config);
+        that.modules[item.app.replace('aj-', '')] = new app(item.options);
     });    
 }
 

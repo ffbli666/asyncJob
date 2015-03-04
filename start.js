@@ -1,7 +1,7 @@
 global.config        = require('./config')();
 global.async         = require('async');
 global.fs            = require('fs');
-global.jobModule     = require('./system/libraries/job-module')();
+global.jobModule     = require('./system/libraries/JobModule')();
 global.child_process = require('child_process');
 
 var cluster    = require('cluster');

@@ -5,6 +5,7 @@ module.exports = function(app) {
             tmpPath: './tmp'
         },
         server: {
+            hostname: 'localhost',
             port: 8888
         },
         supervisor: {            
@@ -23,10 +24,11 @@ module.exports = function(app) {
         jobModules: [
                         {
                             app: 'aj-office-to-pdf',
-                            config: {
+                            options: {                                
                                 wget: 'D:/software/wget-1.11.4-1-bin/bin/wget.exe',
                                 publicPath: './public', //express htdoc
-                                tmpPath: './tmp'
+                                tmpPath: './tmp',
+                                officeToPDF: './node_modules/aj-office-to-pdf/bin/OfficeToPDF.exe'
                             }
                         }
                     ],
