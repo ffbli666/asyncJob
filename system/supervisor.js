@@ -35,6 +35,7 @@ Supervisor.prototype.run = function () {
     jobModel.getTopJob(function(err, job){
         if (err) {
             console.log('get job error: ' + err);
+			that.polling();
             return;
         }
 
