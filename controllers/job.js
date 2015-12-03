@@ -4,7 +4,7 @@ var jobModel  = require('../models/job')();
     {
         job: 'video-encoder',
         config: {
-            
+
         }
     }
 */
@@ -22,7 +22,7 @@ exports.create = function(req, res) {
         if (err) {
             res.status(404).json({status:404, msg:err});
             return;
-        }        
+        }
         res.json({status:200, msg:'ok', result: {uuid: result.uuid}});
     });
 };
@@ -40,7 +40,7 @@ exports.progress = function(req, res) {
         }
         if (!result) {
             res.status(404).json({status:404, msg:'not found job'});
-            return;   
+            return;
         }
         res.json({status:200, msg:'ok', result: result});
     });

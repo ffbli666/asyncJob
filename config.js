@@ -1,4 +1,4 @@
-module.exports = function(app) {    
+module.exports = function(app) {
     return {
         system: {
             publicPath: './public', //express htdoc
@@ -8,7 +8,7 @@ module.exports = function(app) {
             hostname: 'localhost',
             port: 8888
         },
-        supervisor: {            
+        supervisor: {
             pollingInterval: 5000,
             maxForkNumber: 2
         },
@@ -24,14 +24,14 @@ module.exports = function(app) {
         jobModules: [
                         {
                             app: 'aj-office-to-pdf',
-                            options: {                                
-                                wget: 'D:/software/wget-1.11.4-1-bin/bin/wget.exe',
+                            options: {
+                                wget: 'wget.exe',
                                 publicPath: './public', //express htdoc
                                 tmpPath: './tmp',
                                 officeToPDF: './node_modules/aj-office-to-pdf/bin/OfficeToPDF.exe'
                             }
                         }
                     ],
-        
+
     };
 };

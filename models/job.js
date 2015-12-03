@@ -11,14 +11,14 @@ function Job () {
 /*
     data
     {
-        job,    
+        job,
         config,
         from,
         agent
     }
 */
-Job.prototype.create = function (data, myCallback) {    
-    if (!data.job) {        
+Job.prototype.create = function (data, myCallback) {
+    if (!data.job) {
         myCallback('unknow job type');
         return;
     }
@@ -26,8 +26,8 @@ Job.prototype.create = function (data, myCallback) {
         myCallback('unknow job type');
         return;
     }
-    var config = JSON.stringify(data.config) || {};    
- 
+    var config = JSON.stringify(data.config) || {};
+
     async.waterfall([
         function(callback) {
             var find = true;
@@ -65,7 +65,7 @@ Job.prototype.create = function (data, myCallback) {
                     config: config,
                     from: data.from,
                     agent: data.agent
-                };   
+                };
             db.query('INSERT INTO job SET recordTime=NOW(), ? ', values, function (err, result) {
                 if (err) {
                     callback(err);
@@ -73,7 +73,7 @@ Job.prototype.create = function (data, myCallback) {
                 }
                 callback(null, {id: result.insertId, uuid: newUUID});
             });
-        }        
+        }
     ], function (err, result) {
         if (err) {
             myCallback(err);
@@ -113,7 +113,7 @@ Job.prototype.getTopJob = function (myCallback) {
     }
 */
 Job.prototype.setStatus = function (data, myCallback) {
-    var value = {};    
+    var value = {};
     if (!data.id) {
         myCallback('no id');
         return;

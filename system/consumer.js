@@ -9,13 +9,13 @@ jobModule.load(config.jobModules);
 
 process.on('message', function(job) {
     var consumer = jobModule.get(job.job);
-    var jobConfig = JSON.parse(job.config);   
-    var progress = new Progress(job);    
+    var jobConfig = JSON.parse(job.config);
+    var progress = new Progress(job);
     jobConfig.uuid     = job.uuid;
     jobConfig.hostname = config.server.hostname;
     jobConfig.port     = config.server.port;
 
-    jobModel.setStatus({id: job.id, status: 'start'}, function(err, result) {        
+    jobModel.setStatus({id: job.id, status: 'start'}, function(err, result) {
         consumer.run(jobConfig, progress, function(err, result){
             if (err) {
                 jobModel.setStatus({id: job.id, status: 'error', log: err}, function(err, result) {
@@ -30,9 +30,9 @@ process.on('message', function(job) {
     });
 });
 
-function Progress (job) {    
+function Progress (job) {
     function set(percent, callback) {
-        jobModel.setStatus({id: job.id, progress: percent}, function(err, result) {            
+        jobModel.setStatus({id: job.id, progress: percent}, function(err, result) {
             if (err) {
                 callback(err);
                 return;

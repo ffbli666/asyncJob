@@ -1,4 +1,4 @@
-module.exports = function() {    
+module.exports = function() {
     return new JobModule();
 };
 
@@ -13,14 +13,14 @@ JobModule.prototype.load = function (jobModules) {
 
     if( Object.prototype.toString.call( jobModules ) !== '[object Array]' ) {
         return false;
-    }    
+    }
     jobModules.forEach(function (item) {
         var app = require(item.app);
         that.modules[item.app.replace('aj-', '')] = new app(item.options);
-    });    
+    });
 }
 
-JobModule.prototype.get = function(name) {    
+JobModule.prototype.get = function(name) {
     if (Object.prototype.toString.call(this.modules[name]) !== '[object Object]') {
         return false;
     }

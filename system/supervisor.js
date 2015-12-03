@@ -44,18 +44,18 @@ Supervisor.prototype.run = function () {
             that.polling();
             return;
         }
-        
+
         if (!jobModule.get(job.job)) {
             console.log('unknow job type: ' + job.job);
             jobModel.setStatus ({
-                                    id: job.id, 
-                                    status: 'error', 
+                                    id: job.id,
+                                    status: 'error',
                                     log: 'unknow job type: ' + job.job
-                                }, 
+                                },
                                 function(err, result) {
                                     that.polling();
                                 }
-            );            
+            );
             return;
         }
         var consumer = child_process.fork('./system/consumer.js');
@@ -65,7 +65,7 @@ Supervisor.prototype.run = function () {
             set number of milliseconds since 1970/01/01
         */
         consumer.startTime = new Date().getTime();
-        
+
         that.fork.push(consumer);
         // console.log(that.fork.map(function(e){return e.pid;}));
         // console.log(consumer);
@@ -76,7 +76,7 @@ Supervisor.prototype.run = function () {
             var index = that.fork.map(function(e){return e.pid;}).indexOf(this.pid);
             if (index >= 0){
                 that.fork.splice(index, 1);
-            } 
+            }
         });
 
         consumer.on('exit', function (code, signal) {
